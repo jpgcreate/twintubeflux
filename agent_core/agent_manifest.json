@@ -1,0 +1,21 @@
+{
+  "schema_version": "0.1.0",
+  "id": "twincometflux.agent",
+  "name": "TwinCometFlux Agent",
+  "description": "Custom agent to run TwinCometFlux pipeline commands (djx, webx, gfx).",
+  "entry": "agent_core/cli_wrapper.py",
+  "workdir": "agent_core",
+  "commands": [
+    {
+      "name": "analyzer.py",
+      "path": "agent_core/analyzer.py",
+      "description": "Analyze a file or folder (calls djx.analyzer.run)",
+      "args": ["--analyze <path>", "--recursive"]
+    }
+  ],
+  "auto_approve_commands": ["analyzer.py"],
+  "auto_approve": true,
+  "max_requests": 25,
+  "timeout_seconds": 60,
+  "allowed_paths": ["agent_core/**", "agent_core/djx/**"]
+}
