@@ -88,18 +88,27 @@ def test_cli_main_routes_to_webx_uses_real_scraper(monkeypatch, tmp_path, caplog
     importlib.reload(cli)
 
 
-def test_cli_main_routes_to_gfx(monkeypatch, tmp_path):
-    called = {}
-
-    def fake_render(target):
-        called['target'] = target
-
-    monkeypatch.setattr(cli, 'renderer', types.SimpleNamespace(run=fake_render))
+def test_cli_main_routes_to_gfx_uses_real_renderer(monkeypatch, tmp_path, caplog):
+    """Integration: use the real `agent_core.gfx.renderer` on a sandboxed file."""
+    # swap the stubbed top-level `gfx` with the real package and reload CLI
+    real_gfx = importlib.import_module('agent_core.gfx')
+    real_renderer = importlib.import_module('agent_core.gfx.renderer')
+    monkeypatch.setitem(sys.modules, 'gfx', real_gfx)
+    monkeypatch.setitem(sys.modules, 'gfx.renderer', real_renderer)
+    importlib.reload(cli)
 
     scene = tmp_path / 'scene.json'
     scene.write_text('{}')
 
+    caplog.set_level(logging.INFO)
     monkeypatch.setattr(sys, 'argv', ['tc', 'gfx', 'render', str(scene)])
     cli.main()
 
-    assert called['target'] == str(scene)
+    # real renderer should log rendering and completion
+    assert 'Rendering graphics/video' in caplog.text
+    assert 'Render completed' in caplog.text
+
+    # restore stub modules and reload CLI so other tests keep using stubs
+    for key, val in STUB_MODULES.items():
+        monkeypatch.setitem(sys.modules, key, val)
+    importlib.reload(cli)
