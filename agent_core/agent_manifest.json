@@ -37,6 +37,36 @@
                 "agent_core/cli_wrapper.py",
                 "agent_core/djx/analyzer.py"
             ]
+        },
+        {
+            "id": "scrape",
+            "name": "scraper.py",
+            "path": "agent_core/webx/scraper.py",
+            "description": "Scrape a target folder (calls webx.scraper.run)",
+            "args": [
+                { "name": "--target", "type": "path", "required": true, "description": "Target folder to scrape (local path)" }
+            ],
+            "auto_approve": false,
+            "timeout_seconds": 60,
+            "allowed_paths": [
+                "agent_core/webx/scraper.py",
+                "agent_core/cli_wrapper.py"
+            ]
+        },
+        {
+            "id": "render",
+            "name": "renderer.py",
+            "path": "agent_core/gfx/renderer.py",
+            "description": "Render graphics/video (calls gfx.renderer.run)",
+            "args": [
+                { "name": "--target", "type": "path", "required": true, "description": "Target file or folder to render" }
+            ],
+            "auto_approve": false,
+            "timeout_seconds": 60,
+            "allowed_paths": [
+                "agent_core/gfx/renderer.py",
+                "agent_core/cli_wrapper.py"
+            ]
         }
     ],
     "auto_approve": true,
@@ -48,7 +78,9 @@
     "allowed_paths": [
         "agent_core/analyzer.py",
         "agent_core/cli_wrapper.py",
-        "agent_core/djx/analyzer.py"
+        "agent_core/djx/analyzer.py",
+        "agent_core/webx/scraper.py",
+        "agent_core/gfx/renderer.py"
     ],
     "environment": {
         "PYTHONPATH": "."
@@ -63,7 +95,9 @@
         "filesystem_access": [
             "agent_core/analyzer.py",
             "agent_core/cli_wrapper.py",
-            "agent_core/djx/analyzer.py"
+            "agent_core/djx/analyzer.py",
+            "agent_core/webx/scraper.py",
+            "agent_core/gfx/renderer.py"
         ]
     }
 }
