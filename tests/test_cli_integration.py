@@ -63,21 +63,29 @@ def test_cli_main_routes_to_djx_uses_real_analyzer(monkeypatch, tmp_path, caplog
 
 
 
-def test_cli_main_routes_to_webx(monkeypatch, tmp_path):
-    called = {}
-
-    def fake_scrape(target):
-        called['target'] = target
-
-    monkeypatch.setattr(cli, 'scraper', types.SimpleNamespace(run=fake_scrape))
+def test_cli_main_routes_to_webx_uses_real_scraper(monkeypatch, tmp_path, caplog):
+    """Integration: use the real `agent_core.webx.scraper` on a sandboxed folder."""
+    # swap the stubbed top-level `webx` with the real package and reload CLI
+    real_webx = importlib.import_module('agent_core.webx')
+    monkeypatch.setitem(sys.modules, 'webx', real_webx)
+    monkeypatch.setitem(sys.modules, 'webx.scraper', real_webx.scraper)
+    importlib.reload(cli)
 
     site_dir = tmp_path / 'site'
     site_dir.mkdir()
 
+    caplog.set_level(logging.INFO)
     monkeypatch.setattr(sys, 'argv', ['tc', 'webx', 'scrape', str(site_dir)])
     cli.main()
 
-    assert called['target'] == str(site_dir)
+    # real scraper should log simulated collection and completion
+    assert 'Simulating data collection' in caplog.text
+    assert 'Scrape completed' in caplog.text
+
+    # restore stub modules and reload CLI so other tests keep using stubs
+    for key, val in STUB_MODULES.items():
+        monkeypatch.setitem(sys.modules, key, val)
+    importlib.reload(cli)
 
 
 def test_cli_main_routes_to_gfx(monkeypatch, tmp_path):
