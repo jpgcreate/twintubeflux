@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+env/
+.venv/
+venv/
+*.env
+*.egg-info/
+build/
+dist/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+agent_core/logs/
+
+# pytest cache
+.pytest_cache/
+
+# Coverage
+coverage.xml
+htmlcov/

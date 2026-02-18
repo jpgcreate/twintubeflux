@@ -1,0 +1,111 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "terminal.integrated.enableMultiLinePasteWarning": "never",
+    "workbench.startupEditor": "none",
+    "workbench.colorTheme": "Default Dark+",
+    "github.copilot.enable": false,
+    "github.copilot.autoTrigger": false,
+    "github.copilot.nextEditSuggestions.enabled": false,
+    "chat.tools.terminal.autoApprove": {
+      "cd": true,
+      "ls": true,
+      "pwd": true,
+      "docker": true,
+      "docker compose": true,
+      "cat": true,
+      "echo": true,
+      "git": true,
+      "npm": true,
+      "yarn": true
+    }
+  },
+  "launch": {
+    "configurations": [
+      {
+        "name": "TwinCometFlux DJ Analyze",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/agent_core/cli_wrapper.py",
+        "console": "integratedTerminal",
+        "args": ["djx", "analyze", "${workspaceFolder}/music", "--recursive"]
+      },
+      {
+        "name": "TwinCometFlux Build DJ Set",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/agent_core/cli_wrapper.py",
+        "console": "integratedTerminal",
+        "args": ["djx", "build-set", "${workspaceFolder}/music", "--duration", "90"]
+      },
+      {
+        "name": "TwinCometFlux Web Scrape",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/agent_core/cli_wrapper.py",
+        "console": "integratedTerminal",
+        "args": ["webx", "scrape", "${workspaceFolder}/web"]
+      },
+      {
+        "name": "TwinCometFlux Render Graphics",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/agent_core/cli_wrapper.py",
+        "console": "integratedTerminal",
+        "args": ["gfx", "render", "${workspaceFolder}/graphics"]
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "TwinCometFlux DJ Analyze",
+        "type": "shell",
+        "command": "python",
+        "args": ["${workspaceFolder}/agent_core/cli_wrapper.py", "djx", "analyze", "${workspaceFolder}/music", "--recursive"],
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated",
+          "focus": true,
+          "showReuseMessage": false
+        },
+        "runOptions": { "runOn": "folderOpen" },
+        "problemMatcher": []
+      },
+      {
+        "label": "TwinCometFlux Web Scrape",
+        "type": "shell",
+        "command": "python",
+        "args": ["${workspaceFolder}/agent_core/cli_wrapper.py", "webx", "scrape", "${workspaceFolder}/web"],
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated",
+          "focus": true,
+          "showReuseMessage": false
+        },
+        "runOptions": { "runOn": "folderOpen" },
+        "problemMatcher": []
+      },
+      {
+        "label": "TwinCometFlux Render Graphics",
+        "type": "shell",
+        "command": "python",
+        "args": ["${workspaceFolder}/agent_core/cli_wrapper.py", "gfx", "render", "${workspaceFolder}/graphics"],
+        "presentation": {
+          "reveal": "always",
+          "panel": "dedicated",
+          "focus": true,
+          "showReuseMessage": false
+        },
+        "runOptions": { "runOn": "folderOpen" },
+        "problemMatcher": []
+      }
+    ]
+  }
+}
